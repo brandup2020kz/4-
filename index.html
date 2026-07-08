@@ -388,7 +388,42 @@ body.menu-open{overflow:hidden;}
 .calc-result .calc-result-value{font-size:clamp(24px,2.6vw,32px);font-weight:700;margin-top:6px;}
 .calc-result .calc-result-note{font-size:13px;color:rgba(251,250,246,0.55);margin-top:8px;line-height:1.5;}
 .calc-disclaimer{position:relative;z-index:1;margin-top:22px;font-size:13.5px;color:rgba(251,250,246,0.55);max-width:70ch;line-height:1.6;}
-@media (max-width:760px){.calc-grid{grid-template-columns:1fr;}}
+.calc-range-row input[type="range"]{
+  -webkit-appearance:none;appearance:none;height:6px;border-radius:999px;
+  background:rgba(251,250,246,0.22);outline:none;touch-action:pan-y;
+}
+.calc-range-row input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;width:26px;height:26px;border-radius:50%;
+  background:var(--color-accent);border:3px solid var(--color-light);cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,0.35);
+}
+.calc-range-row input[type="range"]::-moz-range-thumb{
+  width:26px;height:26px;border-radius:50%;background:var(--color-accent);
+  border:3px solid var(--color-light);cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,0.35);
+}
+.calc-opt{min-height:44px;cursor:pointer;}
+.calc-opt input{min-width:20px;min-height:20px;}
+@media (max-width:1024px){
+  .calc-grid{grid-template-columns:1fr 1fr;}
+  .calc-field.full{grid-column:1/-1;}
+}
+@media (max-width:760px){
+  .calc-card{padding:24px 18px;border-radius:18px;}
+  .calc-num{display:none;}
+  .calc-grid{grid-template-columns:1fr;gap:18px;}
+  .calc-field.full{grid-column:1/-1;}
+  .calc-head h3{font-size:clamp(20px,5vw,24px);}
+  .calc-actions{flex-direction:column;align-items:stretch;gap:14px;}
+  .calc-result{min-width:0;}
+  .calc-actions .btn{width:100%;}
+  .calc-range-row{gap:12px;}
+  .calc-range-value{min-width:64px;}
+  .calc-field select,.calc-field input[type="number"]{font-size:16px;padding:14px 15px;}
+}
+@media (max-width:380px){
+  .calc-card{padding:20px 14px;}
+  .calc-result-value{font-size:22px;}
+}
 
 /* ABOUT (09) */
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,70px);align-items:center;margin-top:50px;}
@@ -594,6 +629,74 @@ footer{background:var(--color-dark);color:rgba(251,250,246,0.7);padding:60px 0 3
     </div>
   </div>
   <div class="scroll-indicator" aria-hidden="true"></div>
+</section>
+
+<!-- ONLINE CALCULATOR -->
+<section class="section" id="calculator-section" style="padding-top:clamp(50px,7vw,90px);padding-bottom:clamp(50px,7vw,90px);">
+  <div class="container">
+    <div class="calc-card reveal" id="calculator">
+      <span class="calc-num" aria-hidden="true">₸</span>
+      <div class="calc-head">
+        <div class="kicker" style="color:var(--color-accent);">Предварительный расчёт</div>
+        <h3>Онлайн-калькулятор предварительной стоимости</h3>
+        <p>Укажите тип мебели, примерные размеры и материалы — калькулятор покажет вилку ориентировочной стоимости. Это не окончательная цена: точный расчёт делается после замера и согласования проекта.</p>
+      </div>
+      <div class="calc-grid">
+        <div class="calc-field">
+          <label for="calc-type">Тип мебели</label>
+          <select id="calc-type">
+            <option value="kitchen">Кухня</option>
+            <option value="wardrobe">Шкаф</option>
+            <option value="dressing">Гардеробная</option>
+            <option value="hallway">Прихожая</option>
+            <option value="balcony">Балконный шкаф</option>
+            <option value="bedroom">Мебель для спальни</option>
+            <option value="apartment">Мебель для квартиры (несколько помещений)</option>
+          </select>
+        </div>
+        <div class="calc-field">
+          <label for="calc-height">Высота фасадов</label>
+          <select id="calc-height">
+            <option value="standard">Стандартная (до 2,4 м)</option>
+            <option value="tall">До потолка (выше 2,4 м)</option>
+          </select>
+        </div>
+        <div class="calc-field full" id="calc-width-field">
+          <label for="calc-width">Примерная ширина / длина, м</label>
+          <div class="calc-range-row">
+            <input type="range" id="calc-width" min="1" max="8" step="0.1" value="3">
+            <span class="calc-range-value" id="calc-width-value">3.0 м</span>
+          </div>
+        </div>
+        <div class="calc-field">
+          <label for="calc-material">Уровень материалов</label>
+          <select id="calc-material">
+            <option value="base">Базовый</option>
+            <option value="standard" selected>Стандарт</option>
+            <option value="premium">Премиум</option>
+          </select>
+        </div>
+        <div class="calc-field full">
+          <label>Дополнительно</label>
+          <div class="calc-options">
+            <label class="calc-opt"><input type="checkbox" id="opt-light"> Встроенная подсветка</label>
+            <label class="calc-opt"><input type="checkbox" id="opt-glass"> Стеклянные / зеркальные фасады</label>
+            <label class="calc-opt"><input type="checkbox" id="opt-soft"> Механизмы с доводчиками</label>
+            <label class="calc-opt"><input type="checkbox" id="opt-tech"> Интеграция встроенной техники</label>
+          </div>
+        </div>
+      </div>
+      <div class="calc-actions">
+        <div class="calc-result">
+          <div class="calc-result-label">Ориентировочная стоимость</div>
+          <div class="calc-result-value" id="calc-result-value">от 140 000 до 180 000 ₸</div>
+          <div class="calc-result-note" id="calc-result-note">Предварительная вилка. Точная стоимость определяется после замера и согласования комплектации.</div>
+        </div>
+        <a href="#" id="calc-wa-btn" class="btn btn-light" target="_blank" rel="noopener">Отправить расчёт в WhatsApp</a>
+      </div>
+      <p class="calc-disclaimer">Калькулятор даёт приблизительный ориентир на основе типовых параметров и не является публичной офертой. Итоговая стоимость зависит от точных размеров, выбранных материалов, фурнитуры, подсветки, сложности конструкции, доставки и установки и фиксируется только после замера и согласования проекта. Подробные ориентиры по категориям — в разделе «Стоимость» ниже.</p>
+    </div>
+  </div>
 </section>
 
 <!-- 01 POSITIONING -->
@@ -968,69 +1071,6 @@ footer{background:var(--color-dark);color:rgba(251,250,246,0.7);padding:60px 0 3
     <div style="margin-top:32px;" class="reveal">
       <a href="https://wa.me/77055339256?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5%21%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%BF%D0%BE%D0%BB%D1%83%D1%87%D0%B8%D1%82%D1%8C%20%D0%B0%D0%BA%D1%82%D1%83%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9%20%D1%80%D0%B0%D1%81%D1%87%D1%91%D1%82%20%D0%BC%D0%B5%D0%B1%D0%B5%D0%BB%D0%B8.%20%D0%9F%D0%BE%D0%B4%D1%81%D0%BA%D0%B0%D0%B6%D0%B8%D1%82%D0%B5%2C%20%D0%BA%D0%B0%D0%BA%D0%B8%D0%B5%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5%20%D0%BD%D1%83%D0%B6%D0%BD%D0%BE%20%D0%BE%D1%82%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D1%82%D1%8C%3F" class="btn btn-primary" target="_blank" rel="noopener">Получить актуальный расчёт</a>
     </div>
-
-    <!-- ONLINE CALCULATOR -->
-    <div class="calc-card reveal" id="calculator">
-      <span class="calc-num" aria-hidden="true">₸</span>
-      <div class="calc-head">
-        <h3>Онлайн-калькулятор предварительной стоимости</h3>
-        <p>Укажите тип мебели, примерные размеры и материалы — калькулятор покажет вилку ориентировочной стоимости. Это не окончательная цена: точный расчёт делается после замера и согласования проекта.</p>
-      </div>
-      <div class="calc-grid">
-        <div class="calc-field">
-          <label for="calc-type">Тип мебели</label>
-          <select id="calc-type">
-            <option value="kitchen">Кухня</option>
-            <option value="wardrobe">Шкаф</option>
-            <option value="dressing">Гардеробная</option>
-            <option value="hallway">Прихожая</option>
-            <option value="balcony">Балконный шкаф</option>
-            <option value="bedroom">Мебель для спальни</option>
-            <option value="apartment">Мебель для квартиры (несколько помещений)</option>
-          </select>
-        </div>
-        <div class="calc-field">
-          <label for="calc-height">Высота фасадов</label>
-          <select id="calc-height">
-            <option value="standard">Стандартная (до 2,4 м)</option>
-            <option value="tall">До потолка (выше 2,4 м)</option>
-          </select>
-        </div>
-        <div class="calc-field full" id="calc-width-field">
-          <label for="calc-width">Примерная ширина / длина, м</label>
-          <div class="calc-range-row">
-            <input type="range" id="calc-width" min="1" max="8" step="0.1" value="3">
-            <span class="calc-range-value" id="calc-width-value">3.0 м</span>
-          </div>
-        </div>
-        <div class="calc-field">
-          <label for="calc-material">Уровень материалов</label>
-          <select id="calc-material">
-            <option value="base">Базовый</option>
-            <option value="standard" selected>Стандарт</option>
-            <option value="premium">Премиум</option>
-          </select>
-        </div>
-        <div class="calc-field">
-          <label>Дополнительно</label>
-          <div class="calc-options">
-            <label class="calc-opt"><input type="checkbox" id="opt-light"> Встроенная подсветка</label>
-            <label class="calc-opt"><input type="checkbox" id="opt-glass"> Стеклянные / зеркальные фасады</label>
-            <label class="calc-opt"><input type="checkbox" id="opt-soft"> Механизмы с доводчиками</label>
-            <label class="calc-opt"><input type="checkbox" id="opt-tech"> Интеграция встроенной техники</label>
-          </div>
-        </div>
-      </div>
-      <div class="calc-actions">
-        <div class="calc-result">
-          <div class="calc-result-label">Ориентировочная стоимость</div>
-          <div class="calc-result-value" id="calc-result-value">от 140 000 до 180 000 ₸</div>
-          <div class="calc-result-note" id="calc-result-note">Предварительная вилка. Точная стоимость определяется после замера и согласования комплектации.</div>
-        </div>
-        <a href="#" id="calc-wa-btn" class="btn btn-light" target="_blank" rel="noopener">Отправить расчёт в WhatsApp</a>
-      </div>
-      <p class="calc-disclaimer">Калькулятор даёт приблизительный ориентир на основе типовых параметров и не является публичной офертой. Итоговая стоимость зависит от точных размеров, выбранных материалов, фурнитуры, подсветки, сложности конструкции, доставки и установки и фиксируется только после замера и согласования проекта.</p>
-    </div>
   </div>
 </section>
 
@@ -1273,7 +1313,10 @@ footer{background:var(--color-dark);color:rgba(251,250,246,0.7);padding:60px 0 3
         <h3 class="h3">Напишите нам</h3>
         <p class="muted" style="margin-top:10px;">Ответим в WhatsApp по вашим размерам и задаче.</p>
         <a href="https://wa.me/77055339256" class="btn btn-primary" target="_blank" rel="noopener">Написать в WhatsApp</a>
-        <a href="https://2gis.kz/astana/firm/70000001059262295" class="btn btn-outline" target="_blank" rel="noopener">Открыть в 2ГИС</a>
+        <a href="https://2gis.kz/astana/directions/points/%7C71.460241%2C51.173538%3B70000001059262295" class="btn btn-outline" target="_blank" rel="noopener">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l16-7-7 16-2-7-7-2Z"/></svg>
+          Построить маршрут
+        </a>
       </div>
     </div>
   </div>
